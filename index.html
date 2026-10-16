@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhriddin - Shaxsiy Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 20% 20%, #1a0b36 0%, #0d1b3f 50%, #050b1a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Orqa fondagi yorqin nur effektlari (Liquid glass muhiti uchun) */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        body::before {
+            background: #00f2fe;
+            top: 10%;
+            left: 10%;
+        }
+        body::after {
+            background: #7f00ff;
+            bottom: 10%;
+            right: 10%;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            z-index: 1;
+        }
+
+        /* iOS Liquid Glass Card Usuli */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                        inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Navigatsiya menyusi */
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .nav-item {
+            color: #b0c4de;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 18px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+
+        /* Asosiy Hero qismi */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .hero-section h1 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 30%, #a5f3fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-section p {
+            font-size: 16px;
+            color: #d1d5db;
+            line-height: 1.5;
+        }
+
+        /* Tugma dizayni */
+        .glass-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.3), rgba(79, 70, 229, 0.3));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(0, 242, 254, 0.2), inset 0 1px 0 rgba(255,255,255,0.4);
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .glass-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.5), rgba(79, 70, 229, 0.5));
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(0, 242, 254, 0.4);
+        }
+
+        /* Bo'lim sarlavhalari */
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+            color: #f3f4f6;
+        }
+
+        /* Grid bloki (Men haqimda va Loyihalar uchun) */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .sub-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sub-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 242, 254, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .sub-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        /* Yashirin ma'lumotlar oynasi (Accordion/Modal) */
+        .content-display {
+            margin-top: 15px;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid #00f2fe;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #e5e7eb;
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Aloqa havolalari */
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .contact-link:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+            padding-left: 22px;
+        }
+
+        /* Mobil moslashuv */
+        @media(max-width: 600px) {
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .hero-section h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Yuqori menyu -->
+        <nav class="nav-menu">
+            <a href="#asosiy" class="nav-item active">Asosiy</a>
+            <a href="#men-haqimda" class="nav-item">Men haqimda</a>
+            <a href="#loyihalar" class="nav-item">Loyihalar</a>
+            <a href="#aloqa" class="nav-item">Aloqa</a>
+        </nav>
+
+        <!-- Asosiy qism -->
+        <div id="asosiy" class="glass-card hero-section">
+            <h1>SALOM, MEN MUHRIDDINMAN</h1>
+            <p>Bu sayt mening kichik loyihalarimdan biri va men havaskor dasturchiman 😁</p>
+            <a href="#aloqa" class="glass-btn">Bog'lanish</a>
+        </div>
+
+        <!-- Men haqimda / Bo'limlar -->
+        <div id="men-haqimda" class="glass-card">
+            <h2 class="section-title">Men haqimda</h2>
+            <div class="grid-cards">
+                <div class="sub-card" onclick="toggleInfo('oqish')">
+                    <h3>O'qish va ijod</h3>
+                    <p style="font-size: 13px; color: #9ca3af;">Batafsil ko'rish</p>
+                </div>
+                <div class="sub-card" onclick="toggleInfo('faoliyat')">
+                    <h3>Faoliyatim</h3>
+                    <p style="font-size: 13px; color: #9ca3af;">Batafsil ko'rish</p>
+                </div>
+                <div class="sub-card" onclick="toggleInfo('yutuqlar')">
+                    <h3>Yutuqlar</h3>
+                    <p style="font-size: 13px; color: #9ca3af;">Batafsil ko'rish</p>
+                </div>
+            </div>
+
+            <!-- Ma'lumotlar chiqadigan joy -->
+            <div id="info-oqish" class="content-display">
+                Namangan Davlat Universiteti Iqtisodiyot fakulteti talabasi 
+            </div>
+            <div id="info-faoliyat" class="content-display">
+                Qiziqishlarim asosida turli xil sayt telegram botlar APK dasturlar yana shunga oxshash narsalar tayyorlashni yoqtiraman.
+            </div>
+            <div id="info-yutuqlar" class="content-display">
+                Asosiy yutugim tinimsiz telefon oynab charchamaslik 😅😂
+            </div>
+        </div>
+
+        <!-- Loyihalar -->
+        <div id="loyihalar" class="glass-card">
+            <h2 class="section-title">Loyihalarim</h2>
+            <div class="grid-cards">
+                <div class="sub-card">
+                    <h3>iOS Ilovalari</h3>
+                    <p style="font-size: 13px; color: #9ca3af;">Hozircha ma'lumotlar joylanmagan</p>
+                </div>
+                <div class="sub-card">
+                    <h3>Telegram Botlar</h3>
+                    <p style="font-size: 13px; color: #9ca3af;">Hozircha ma'lumotlar joylanmagan</p>
+                </div>
+                <div class="sub-card">
+                    <h3>Musiqa & Phonk</h3>
+                    <p style="font-size: 13px; color: #9ca3af;">Hozircha ma'lumotlar joylanmagan</p>
+                </div>
+                <div class="sub-card">
+                    <h3>O'yinlar</h3>
+                    <p style="font-size: 13px; color: #9ca3af;">Hozircha ma'lumotlar joylanmagan</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aloqa -->
+        <div id="aloqa" class="glass-card">
+            <h2 class="section-title">Aloqa</h2>
+            <div class="contact-links">
+                <a href="https://t.me/Ollohga_shukur_har_tong_uchun" target="_blank" class="contact-link">
+                    <span>📱 Telegram: t.me/Ollohga_shukur_har_tong_uchun</span>
+                </a>
+                <a href="https://www.instagram.com/ismoilov.islamic?xtok=YXBlZGgzOXIxMmdu" target="_blank" class="contact-link">
+                    <span>📸 Instagram: ismoilov.islamic</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tugmalar bosilganda ma'lumotlarni ochib-yopish funksiyasi
+        function toggleInfo(type) {
+            // Barcha ochilgan oynalarni yopish
+            const allInfos = document.querySelectorAll('.content-display');
+            allInfos.forEach(el => {
+                if (el.id !== 'info-' + type) {
+                    el.style.display = 'none';
+                }
+            });
+
+            // Tanlangan oynani ochish yoki yopish
+            const target = document.getElementById('info-' + type);
+            if (target.style.display === 'block') {
+                target.style.display = 'none';
+            } else {
+                target.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
